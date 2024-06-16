@@ -1,17 +1,17 @@
 {
   "private": true,
-  "displayName": "Plugin Name",
-  "name": "homebridge-plugin-name",
-  "version": "1.0.0",
-  "description": "A short description about what your plugin does.",
+  "displayName": "UPLIFT Desk BLE",
+  "name": "homebridge-uplift-desk",
+  "version": "0.1.0",
+  "description": "A plugin for controlling the height of an UPLIFT Desk using the official bluetooth adapter.",
   "license": "Apache-2.0",
   "type": "module",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/USERNAME/GITHUB_PROJECT_NAME.git"
+    "url": "git+https://github.com/grelca/homebridge-uplift-desk.git"
   },
   "bugs": {
-    "url": "https://github.com/USERNAME/GITHUB_PROJECT_NAME/issues"
+    "url": "https://github.com/grelca/homebridge-uplift-desk/issues"
   },
   "engines": {
     "node": "^18.17.0 || ^20.9.0",
