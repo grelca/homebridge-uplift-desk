@@ -1,5 +1,4 @@
 {
-  "private": true,
   "displayName": "UPLIFT Desk BLE",
   "name": "homebridge-uplift-desk",
   "version": "0.1.0",
