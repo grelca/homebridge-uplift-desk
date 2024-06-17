@@ -63,6 +63,8 @@ export class UpliftDeskPlatform implements DynamicPlatformPlugin {
    */
   async discoverDevices() {
     await this.bleAdapter.startDiscovery();
+    await this.bleAdapter.waitForDiscovery();
+
     if (!this.bleAdapter.isReady()) {
       this.log.warn(`BLE device could not be configured: ${this.config.bleName}`);
       return;

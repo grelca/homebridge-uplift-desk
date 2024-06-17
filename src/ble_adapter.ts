@@ -15,8 +15,6 @@ export class BluetoothAdapter {
   private writer?: noble.Characteristic;
   private notifier?: noble.Characteristic;
 
-  private ready = false;
-
   constructor(
     private readonly deviceName: string,
     private readonly logger: Logging,
@@ -25,7 +23,7 @@ export class BluetoothAdapter {
   }
 
   isReady() {
-    return this.ready;
+    return !!this.writer;
   }
 
   initialize() {
@@ -48,20 +46,23 @@ export class BluetoothAdapter {
     try {
       await this.initialize();
       noble.on('discover', peripheral => this.handlePeripheral(peripheral));
-
-      const timeout = sleep(DISCOVERY_TIMEOUT);
-      const scanStop = new Promise(resolve => {
-        noble.once('scanStop', () => {
-          resolve(true);
-        });
-      });
-
       await noble.startScanningAsync([BLE_SERVICE_UUID], false);
-      await Promise.race([timeout, scanStop]);
     } catch (error) {
       this.logger.error(`bluetooth discovered failed: ${error}`);
-    } finally {
       await this.stopDiscovery();
+    }
+  }
+
+  async waitForDiscovery() {
+    const startTime = Date.now();
+    const timeoutTime = startTime + DISCOVERY_TIMEOUT;
+
+    while (!this.isReady()) {
+      if (timeoutTime < Date.now()) {
+        return;
+      }
+
+      await sleep(1000);
     }
   }
 
@@ -71,14 +72,12 @@ export class BluetoothAdapter {
     }
 
     this.peripheral = peripheral;
-    this.logger.success(`BLE device found: ${this.deviceName}`);
+    this.logger.info(`BLE device found: ${this.deviceName}`);
 
     try {
       await this.peripheral.connectAsync();
       await this.findService();
       await this.findCharacteristics();
-
-      this.ready = true;
     } catch (error) {
       this.logger.error(`BLE device setup failed: ${error}`);
     } finally {

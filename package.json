@@ -1,7 +1,7 @@
 {
   "displayName": "UPLIFT Desk BLE",
   "name": "homebridge-uplift-desk",
-  "version": "0.1.0",
+  "version": "0.1.4",
   "description": "A plugin for controlling the height of an UPLIFT Desk using the official bluetooth adapter.",
   "license": "Apache-2.0",
   "type": "module",
