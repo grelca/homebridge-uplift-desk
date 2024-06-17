@@ -1,7 +1,7 @@
 {
   "pluginAlias": "UpliftDesk",
   "pluginType": "platform",
-  "singular": true,
+  "singular": false,
   "schema": {
     "type": "object",
     "properties": {
@@ -9,7 +9,47 @@
         "title": "Name",
         "type": "string",
         "required": true,
-        "default": "Example Dynamic Platform"
+        "default": "UPLIFT Desk"
+      },
+      "bleName": {
+        "title": "Bluetooth Adapter Name",
+        "description": "Name of the desk's BLE adapter - can be found under \"Desk name\" setting in the UPLIFT Desk app",
+        "type": "string",
+        "required": true,
+        "default": "BLE Device F75B26"
+      },
+      "heights": {
+        "title": "Saved Desk Heights",
+        "type": "array",
+        "required": true,
+        "items": {
+          "type": "object",
+          "properties": {
+            "label": {
+              "title": "Switch Name",
+              "description": "How the switch will be labeled in the Home app",
+              "type": "string",
+              "required": true,
+              "placeholder": "Standing"
+            },
+            "value": {
+              "title": "Desk Height",
+              "type": "number",
+              "required": true,
+              "placeholder": "39.3"
+            },
+            "unit": {
+              "title": "Unit",
+              "type": "string",
+              "required": true,
+              "default": "inches",
+              "oneOf": [
+                { "title": "Inches", "enum": ["inches"] },
+                { "title": "Centimeters", "enum": ["cm"] }
+              ]
+            }
+          }
+        }
       }
     }
   }
