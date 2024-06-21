@@ -133,7 +133,7 @@ export class BluetoothAdapter {
   move(height_in_mm: number) {
     height_in_mm = Math.round(height_in_mm);
     const height_in_hex = this.dec_to_hex(height_in_mm);
-    const checksum_hex = this.checksum(height_in_hex);
+    const checksum_hex = this.checksum(height_in_mm);
 
     const full_hex = `f1f1 1b02 ${height_in_hex} ${checksum_hex} 7e`;
     this.logger.debug(`calculated hex for ${height_in_mm} mm: ${full_hex}`);
@@ -144,16 +144,10 @@ export class BluetoothAdapter {
     return this.pad_hex(num.toString(16));
   }
 
-  checksum(height_hex: string) {
-    // get the sum of the two command bytes and the two value bytes
-    const buffer = this.buffer(height_hex);
-    const sum = 0x1b + 0x02 + buffer[0] + buffer[1];
-
-    // take the last byte of that sum
-    const instruction_hex = sum.toString(16);
-    const last = this.buffer(instruction_hex).slice(-1)[0];
-
-    return this.pad_hex(last.toString(16));
+  checksum(height_in_mm: number) {
+    const sum = 0x1b + 0x02 + (height_in_mm & 0xff) + (height_in_mm >> 8);
+    const last_byte = sum & 0xff;
+    return this.pad_hex(last_byte.toString(16));
   }
 
   buffer(hex: string) {
